@@ -1,19 +1,15 @@
-import json
+# import json
 from TwitterSearch import *
-
-credFile = open('creds.json', 'r')
-
-credJson = json.load(credFile)
+from boto.s3.connection import S3Connection
+import os
 
 
 ts = TwitterSearch(
-    consumer_key=credJson["consumer_key"],
-    consumer_secret=credJson["consumer_secret"],
-    access_token=credJson["access_token"],
-    access_token_secret=credJson["access_token_secret"],
+    consumer_key=S3Connection(os.environ['S3_KEY'], os.environ['consumer_key']),
+    consumer_secret=S3Connection(os.environ['S3_KEY'], os.environ['consumer_secret']),
+    access_token=S3Connection(os.environ['S3_KEY'], os.environ['access_token']),
+    access_token_secret=S3Connection(os.environ['S3_KEY'], os.environ['access_token_secret']),
 )
-
-credFile.close()
 
 
 def filterTweets(tso: TwitterSearchOrder) -> list:

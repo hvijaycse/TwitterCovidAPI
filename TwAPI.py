@@ -39,7 +39,7 @@ def getFood():
 
 @app.get('/getOxygen')
 def getOxygen():
-    oxygenKeywords = ["food", "covid", city]
+    oxygenKeywords = ["Oxygen", "available", "verified", city]
     return(returnDict(getResourceTweets(oxygenKeywords)))
 
 

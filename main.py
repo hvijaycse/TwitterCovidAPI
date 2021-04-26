@@ -1,21 +1,25 @@
 from Twitter_V4 import getResourceTweets
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 city = 'jaipur'
+origins = ['*']
+app.add_middleware(CORSMiddleware,  allow_origins=origins,
+                   allow_credentials=False,  allow_methods=["*"],  allow_headers=["*"], )
 
 
 def returnDict(tweets: list) -> dict:
 
-    newDict= {
-        "tweetCount" : len(tweets)
-    } 
+    newDict = {
+        "tweetCount": len(tweets)
+    }
 
     for i, tweet in enumerate(tweets):
         newDict[i] = tweet
 
     return newDict
+
 
 @app.get("/")
 def home():

@@ -1,6 +1,4 @@
-# import json
 from TwitterSearch import *
-from boto.s3.connection import S3Connection
 import os
 
 
@@ -30,7 +28,7 @@ def filterTweets(tso: TwitterSearchOrder) -> list:
     # Loop to filter tweets
     for tweet in ts.search_tweets_iterable(tso):
         # Condition for filtering tweet
-        if "RT" not in tweet['text'] and "need" not in tweet["text"].lower() and 'required' not in tweet['text'].lower():
+        if "RT" not in tweet['full_text'] and "need" not in tweet["full_text"].lower() and 'required' not in tweet['full_text'].lower():
             # adding filtered tweet to list
             tweetList.append(tweet)
 
@@ -57,12 +55,11 @@ def printTweets(ResourceName, tweetsList, ResultLimit=None):
         tweetsList = tweetsList[:ResultLimit]
 
     for tweet in tweetsList:
-        if "RT" not in tweet['text'] and "need" not in tweet["text"].lower() and 'required' not in tweet['text'].lower():
-            print("_" * 60)
-            print()
-            print(f"{tweet['user']['screen_name']}:")
-            for line in tweet["text"].split("\n"):
-                print(f"\t{line}")
+        print("_" * 60)
+        print()
+        print(f"{tweet['user']['screen_name']}:")
+        for line in tweet["full_text"].split("\n"):
+            print(f"\t{line}")
 
     print(f"Tweet Fetched: {len(tweetsList)}")
     print('='*40)  # ending line
@@ -86,6 +83,7 @@ def getResourceTweets(keywords: list, resultType: str = 'recent') -> list:
     tso = TwitterSearchOrder()
     tso.set_keywords(keywords)
     tso.set_result_type(result_type=resultType)
+    tso.arguments.update({'tweet_mode':'extended'})
 
     return filterTweets(tso)
 

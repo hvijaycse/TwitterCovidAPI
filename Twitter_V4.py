@@ -34,11 +34,9 @@ def filterTweets(tso: TwitterSearchOrder, stopWords: list = None) -> list:
     # Loop to filter tweets
     for tweet in ts.search_tweets_iterable(tso):
         # Condition for filtering tweet
-        filterCount += 1
         if "RT" not in tweet['full_text'][:3] and not any(word in tweet['full_text'].lower() for word in stopWords):
             # adding filtered tweet to list
             tweetList.append(tweet)
-    print(f"Tweets filtered {filterCount}")
     return tweetList
 
 
@@ -121,7 +119,7 @@ if __name__ == "__main__":
 
     # REMDESIVIR FETCH
     remdesivirKeywords = ["remdesivir", "verified", city]
-    printTweets("REMDESIVIR", getResourceTweets(remdesivirKeywords))
+    # printTweets("REMDESIVIR", getResourceTweets(remdesivirKeywords))
 
     # FOOD FETCH
     foodKeywords = ["food", "covid", city]

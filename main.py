@@ -31,32 +31,44 @@ def home():
 
 @app.get('/getRem')
 def getRemdesivir():
-    remdesivirKeywords = ["remdesivir", "available", "verified", city]
+    remdesivirKeywords = ["remdesivir", "verified", city]
     return(returnDict(getResourceTweets(remdesivirKeywords)))
 
 
-@app.get('/getfood')
+@app.get('/getToc')
+def getTocilizumab():
+    TOCILIZUMABKeywords = ["Tocilizumab", "verified", city]
+    return(returnDict(getResourceTweets(TOCILIZUMABKeywords)))
+
+
+@app.get('/getFood')
 def getFood():
-    foodKeywords = ["Food", "covid", city]
-    return(returnDict(getResourceTweets(foodKeywords)))
+    foodKeywords = ["food", "covid", city]
+    return(returnDict(getResourceTweets(foodKeywords, stopWords=[])))
 
 
-@app.get('/getOxygen')
-def getOxygen():
-    oxygenKeywords = ["Oxygen", "available", "verified", city]
-    return(returnDict(getResourceTweets(oxygenKeywords)))
+@app.get('/getOxygenCylinder')
+def getOxygenCylinder():
+    oxygenCylinderKeywords = ["Oxygen", "cylinder", "verified", city]
+    return(returnDict(getResourceTweets(oxygenCylinderKeywords)))
+
+
+@app.get('/getOxygenBed')
+def getOxygenBed():
+    oxygenBedKeywords = ["oxygen", "bed", "verified", city]
+    return(returnDict(getResourceTweets(oxygenBedKeywords)))
 
 
 @app.get('/getHb')
 def gethospitalBed():
-    hospitalBedKeywords = ["bed", "available",  "covid", city]
+    hospitalBedKeywords = ["bed", "verified", city]
     return(returnDict(getResourceTweets(hospitalBedKeywords)))
 
 
 @app.get('/getICU')
 def getICU():
-    icuKeywords = ["ICU", "available", city]
-    return(returnDict(getResourceTweets(icuKeywords)))
+    ICUKeywords = ["ICU", "verified", city]
+    return(returnDict(getResourceTweets(ICUKeywords)))
 
 
 @app.get('/getNews')

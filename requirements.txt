@@ -28,6 +28,7 @@ starlette==0.13.6
 TwitterSearch==1.0.2
 urllib3==1.26.4
 uvicorn==0.13.4
+uvloop
 virtualenv==20.4.4
 virtualenv-clone==0.5.4
 wincertstore==0.2

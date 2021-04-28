@@ -1,10 +1,14 @@
-from Twitter_V4 import getResourceTweets
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from Twitter_V4 import getResourceTweets
+from get_db import get_resources, connect_db, put_resources,Item
 
 app = FastAPI()
+
 city = 'jaipur'
 origins = ['*']
+
 app.add_middleware(CORSMiddleware,  allow_origins=origins,
                    allow_credentials=False,  allow_methods=["*"],  allow_headers=["*"], )
 
@@ -75,3 +79,23 @@ def getICU():
 def getNews():
     newsKeywords = ["News", "covid", city]
     return(returnDict(getResourceTweets(newsKeywords)))
+
+
+@app.get('/getResource/{resource}')
+def getResource(resource):
+    db = connect_db()
+    # print(resource)
+    data = get_resources(db, resource)
+    # print(data)
+    return JSONResponse(content=data)
+
+
+@app.post('/putResource/')
+async def putResource(item: Item):
+    db = connect_db()
+    ins_id = put_resources(db,item)
+    if ins_id != '':
+        return {'success' : ins_id}
+    else:
+        return {'fail'}
+    

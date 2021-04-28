@@ -43,7 +43,7 @@ def get_resources(db, resource):
             "Name": item['Name'], 
             "Area":item["Area"],
             "Contact number": item["Contact number"],
-            "Resourse": item["Resourse"], 
+            "Resource": item["Resource"], 
             "Description": item["Description"], 
             "Price": item["Price"], 
             "City": item["City"], 

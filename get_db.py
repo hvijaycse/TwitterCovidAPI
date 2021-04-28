@@ -6,7 +6,7 @@ Created on Tue Apr 27 15:25:18 2021
 """
 
 import pymongo
-from json import dumps
+from bson.json_util import dumps, loads
 from pydantic import BaseModel
 from typing import Optional
 import os

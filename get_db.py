@@ -67,6 +67,8 @@ def put_resources(db, item:Item):
             "City": item.City,
             "Verifed": item.Verifed,
             "Image": item.Image,
+            "Time": item.Time,
+      
             }
     ins_id = db.covid_resources.insert_one(data).inserted_id
     if ins_id != '':

@@ -61,7 +61,7 @@ def put_resources(db, item:Item):
             "Name": item.Name, 
             "Area":item.Area, 
             "Contact number": item.Contact, 
-            "Resourse": item.Resource, 
+            "Resource": item.Resource, 
             "Description": item.Description,
             "Price": item.Price,
             "City": item.City,

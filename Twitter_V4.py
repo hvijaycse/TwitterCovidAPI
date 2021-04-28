@@ -28,7 +28,7 @@ def filterTweets(tso: TwitterSearchOrder, stopWords: list = None) -> list:
     tweetList = []
 
     if stopWords == None:
-        stopWords = ['need', 'any ', 'require']
+        stopWords = ['need', 'any ', 'require', 'delhi golden']
 
     filterCount = 0
     # Loop to filter tweets

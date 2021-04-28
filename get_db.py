@@ -43,7 +43,6 @@ def get_resources(db, resource):
     return json_data 
 
 def put_resources(db, item:Item):
-    #search_string = '{"Resourse": "'+resource+'"}'
     data  = {
             "Name": item.Name, 
             "Area":item.Area, 
@@ -56,7 +55,7 @@ def put_resources(db, item:Item):
             "Image": item.Image,
             }
     ins_id = db.covid_resources.insert_one(data).inserted_id
-    #list_cur = list(db.covid_resources.find(search_string))
-    #jsonString = dumps(list_cur)
-    #print(data)
-    return ins_id
+    if ins_id != '':
+        ret = { "success" : ins_id}
+    jsonString = dumps(ret)
+    return jsonString

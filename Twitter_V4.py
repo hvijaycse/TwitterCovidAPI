@@ -1,6 +1,7 @@
 from TwitterSearch import *
 import os
-
+from datetime import datetime
+from pytz import timezone
 
 ts = TwitterSearch(
     consumer_key=os.environ.get('consumer_key', None),
@@ -27,14 +28,35 @@ def filterTweets(tso: TwitterSearchOrder, stopWords: list = None) -> list:
     # Creating empty list
     tweetList = []
 
+    # Adding data to get better format of date time.
+    timeNow = datetime.now().replace(tzinfo=timezone("Asia/Calcutta"))
+    timeFormat = "%a %b %d %H:%M:%S %z %Y"
+
     if stopWords == None:
         stopWords = ['need', 'any ', 'require', 'golden']
 
-    filterCount = 0
     # Loop to filter tweets
     for tweet in ts.search_tweets_iterable(tso):
         # Condition for filtering tweet
-        if "RT" not in tweet['full_text'][:3] and not any(word in tweet['full_text'].lower() for word in stopWords):
+        if not any(word in tweet['full_text'].lower() for word in stopWords):
+
+            # Setting time difference field in tweet
+
+            timetweet = datetime.strptime(tweet["created_at"], timeFormat)
+            timetweet = timetweet.replace(tzinfo=timezone("Asia/Calcutta"))
+            timeDiff = timeNow - timetweet
+
+            minutes = timeDiff.seconds // 60
+            hours = minutes // 60
+            days = timeDiff.days
+
+            if days:
+                tweet['timeDiff'] = f"{days}d"
+            elif hours:
+                tweet['timeDiff'] = f"{hours}h"
+            else:
+                tweet['timeDiff'] = f"{minutes}m"
+
             # adding filtered tweet to list
             tweetList.append(tweet)
     return tweetList
@@ -85,6 +107,12 @@ def getResourceTSO(keywords: list, resultType: str = 'recent') -> list:
         resultType : str
     return : TwitterSearchOrder
     '''
+
+    # This remove retweets improve performance
+    # around 5 times from 1200 tweets filtering
+    # to just 200 to 300 now.
+    keywords.append('-filter:retweets')
+
     tso = TwitterSearchOrder()
     tso.set_keywords(keywords)
     tso.set_result_type(result_type=resultType)

@@ -39,18 +39,27 @@ def get_resources(db, resource):
     curso = db.covid_resources.find(search_string)
     ret = []
     for item in curso:
-            data  = {
-            "Name": item['Name'], 
-            "Area":item["Area"],
-            "Contact number": item["Contact number"],
-            "Resourse": item["Resourse"], 
-            "Description": item["Description"], 
-            "Price": item["Price"], 
-            "City": item["City"], 
-            "Verifed": item["Verifed"],
-            "Image": item["Image"],
-            "Time": item["Time"]
-            }
+            data= {}
+            if "Name"in item.keys():
+                data["Name"] = item['Name']
+            if "Area"in item.keys():
+                data["Area"] = item['Area']
+            if "Contact number"in item.keys():
+                data["Contact number"] = item['Contact number']
+            if "Resourse"in item.keys():
+                data["Resourse"] = item['Resourse']
+            if "Description"in item.keys():
+                data["Description"] = item['Description']
+            if "Price"in item.keys():
+                data["Price"] = item['Price']
+            if "City"in item.keys():
+                data["City"] = item['City']
+            if "Verifed"in item.keys():
+                data["Verifed"] = item['Verifed']
+            if "Image"in item.keys():
+                data["Image"] = item['Image']
+            if "Time"in item.keys():
+                data["Time"] = item['Time']    
             ret.append(data)
              
 
@@ -67,9 +76,15 @@ def put_resources(db, item:Item):
             "City": item.City,
             "Verifed": item.Verifed,
             "Image": item.Image,
+            "Time": item.Time
             }
     ins_id = db.covid_resources.insert_one(data).inserted_id
+    ret = ''
     if ins_id != '':
         ret = { "success" : ins_id}
     jsonString = dumps(ret)
     return jsonString
+
+def get_tweets():
+    url = ''
+

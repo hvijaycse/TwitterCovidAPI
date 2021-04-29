@@ -23,7 +23,7 @@ class Item(BaseModel):
     Description: Optional[str] = None
     Price: Optional[str] = None
     City: Optional[str] = None
-    Verifed: Optional[str] = None
+    Verified: Optional[str] = None
     Image: Optional[str] = None
     Time: Optional[str] = None
 
@@ -35,7 +35,7 @@ def connect_db():
     return db
 
 def get_resources(db, resource):
-    search_string = {"Resourse": resource}
+    search_string = {"Resource": resource}
     curso = db.covid_resources.find(search_string)
     ret = []
     for item in curso:
@@ -46,16 +46,16 @@ def get_resources(db, resource):
                 data["Area"] = item['Area']
             if "Contact number"in item.keys():
                 data["Contact number"] = item['Contact number']
-            if "Resourse"in item.keys():
-                data["Resourse"] = item['Resourse']
+            if "Resource"in item.keys():
+                data["Resource"] = item['Resource']
             if "Description"in item.keys():
                 data["Description"] = item['Description']
             if "Price"in item.keys():
                 data["Price"] = item['Price']
             if "City"in item.keys():
                 data["City"] = item['City']
-            if "Verifed"in item.keys():
-                data["Verifed"] = item['Verifed']
+            if "Verified"in item.keys():
+                data["Verified"] = item['Verified']
             if "Image"in item.keys():
                 data["Image"] = item['Image']
             if "Time"in item.keys():
@@ -70,11 +70,11 @@ def put_resources(db, item:Item):
             "Name": item.Name, 
             "Area":item.Area, 
             "Contact number": item.Contact, 
-            "Resourse": item.Resource, 
+            "Resource": item.Resource, 
             "Description": item.Description,
             "Price": item.Price,
             "City": item.City,
-            "Verifed": item.Verifed,
+            "Verified": item.Verified,
             "Image": item.Image,
             "Time": item.Time
             }

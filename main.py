@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from Twitter_V4 import getResourceTweets
-from get_db import get_resources, connect_db, put_resources,Item
+from get_db import get_resources, connect_db, put_resources, Item, get_bed
 
 app = FastAPI()
 
@@ -25,6 +25,9 @@ def returnDict(tweets: list) -> dict:
     return newDict
 
 
+'''
+Endpoint url
+'''
 @app.get("/")
 def home():
 
@@ -32,6 +35,10 @@ def home():
         "GET WELL": "JAIPUR"
     }
 
+
+'''
+Endpoints for Twitter API.
+'''
 
 @app.get('/getRem')
 def getRemdesivir():
@@ -81,6 +88,10 @@ def getNews():
     return(returnDict(getResourceTweets(newsKeywords)))
 
 
+'''
+Endpoints for DB.
+'''
+
 @app.get('/getResource/{resource}')
 def getResource(resource):
     db = connect_db()
@@ -93,9 +104,15 @@ def getResource(resource):
 @app.post('/putResource/')
 async def putResource(item: Item):
     db = connect_db()
-    ins_id = put_resources(db,item)
+    ins_id = put_resources(db, item)
     if ins_id != '':
-        return {'success' : ins_id}
+        return {'success': ins_id}
     else:
         return {'fail'}
-    
+
+
+@app.get('/getBed/{city}')
+def getResource(city):
+    db = connect_db()
+    data = get_bed(db, city)
+    return JSONResponse(content=data)

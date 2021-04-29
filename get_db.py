@@ -85,6 +85,39 @@ def put_resources(db, item:Item):
     jsonString = dumps(ret)
     return jsonString
 
-def get_tweets():
-    url = ''
-
+def get_bed(db, city):
+    search_string = {"City": city}
+    curso = db.bed_tracker.find(search_string)
+    ret = []
+    for item in curso:
+            data= {}
+            if "City"in item.keys():
+                data["City"] = item['City']
+            if "Hospital"in item.keys():
+                data["Hospital"] = item['Hospital']
+            if "Gen_Bed_T"in item.keys():
+                data["Gen_Bed_T"] = item['Gen_Bed_T']
+            if "Gen_Bed_O"in item.keys():
+                data["Gen_Bed_O"] = item['Gen_Bed_O']
+            if "Gen_Bed_A"in item.keys():
+                data["Gen_Bed_A"] = item['Gen_Bed_A']
+            if "Oxy_Bed_T"in item.keys():
+                data["Oxy_Bed_T"] = item['Oxy_Bed_T']
+            if "Oxy_Bed_O"in item.keys():
+                data["Oxy_Bed_O"] = item['Oxy_Bed_O']
+            if "Oxy_Bed_A"in item.keys():
+                data["Oxy_Bed_A"] = item['Oxy_Bed_A']
+            if "ICU_Bed_wov_T"in item.keys():
+                data["ICU_Bed_wov_T"] = item['ICU_Bed_wov_T']
+            if "ICU_Bed_wov_O"in item.keys():
+                data["ICU_Bed_wov_O"] = item['ICU_Bed_wov_O']
+            if "ICU_Bed_wov_A"in item.keys():
+                data["ICU_Bed_wov_A"] = item['ICU_Bed_wov_A']   
+            if "ICU_Bed_wv_T"in item.keys():
+                data["ICU_Bed_wv_T"] = item['ICU_Bed_wv_T']   
+            if "ICU_Bed_wv_O"in item.keys():
+                data["ICU_Bed_wv_O"] = item['ICU_Bed_wv_O']   
+            if "ICU_Bed_wv_A"in item.keys():
+                data["ICU_Bed_wv_A"] = item['ICU_Bed_wv_A']                   
+            ret.append(data)
+    return ret 

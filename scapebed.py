@@ -22,22 +22,22 @@ Created on Wed Apr 28 17:59:05 2021
 
 
 """
+
+
+
+
 import requests
 import pymongo
 import os
 from bs4 import BeautifulSoup
-from apscheduler.schedulers.blocking import BlockingScheduler
-
-sched = BlockingScheduler()
-
-
-@sched.scheduled_job('interval', hours=1)
 def updateBed_job():
     '''
     This method is used to update the live bed data 
     in database. 
     This is executed every hour using heroku clock.
     '''
+
+    print("Cron job is running")
     dbUsername = os.environ.get('db_username', None)
     dbPass = os.environ.get('db_pass', None)
     url = 'https://covidinfo.rajasthan.gov.in/Covid-19hospital-wisebedposition-wholeRajasthan.aspx'
@@ -45,7 +45,8 @@ def updateBed_job():
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    client = pymongo.MongoClient(f"mongodb+srv://{dbUsername}:{dbPass}@cluster0.w3mep.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+    client = pymongo.MongoClient(
+        f"mongodb+srv://{dbUsername}:{dbPass}@cluster0.w3mep.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = client.test_database
     db.bed_tracker.delete_many({})
     count = 0
@@ -54,32 +55,31 @@ def updateBed_job():
         td = tr.find_all("td")
         if len(td) >= 14:
             count += 1
-            data  = {
-                    'City':td[1].text,
-                    'Hospital':td[2].text,
-                    'Gen_Bed_T': td[3].text,
-                    'Gen_Bed_O': td[4].text,
-                    'Gen_Bed_A': td[5].text,
-                    'Oxy_Bed_T': td[6].text,
-                    'Oxy_Bed_O': td[7].text,
-                    'Oxy_Bed_A': td[8].text,
-                    'ICU_Bed_wov_T': td[9].text,
-                    'ICU_Bed_wov_O': td[10].text,
-                    'ICU_Bed_wov_A': td[11].text,
-                    'ICU_Bed_wv_T': td[12].text,
-                    'ICU_Bed_wv_O': td[13].text,
-                    'ICU_Bed_wv_A': td[14].text
-                    }
-            ins_id = db.bed_tracker.insert_one(data).inserted_id        
-            print('Record inserted with Id',ins_id)
+            data = {
+                'City': td[1].text,
+                'Hospital': td[2].text,
+                'Gen_Bed_T': td[3].text,
+                'Gen_Bed_O': td[4].text,
+                'Gen_Bed_A': td[5].text,
+                'Oxy_Bed_T': td[6].text,
+                'Oxy_Bed_O': td[7].text,
+                'Oxy_Bed_A': td[8].text,
+                'ICU_Bed_wov_T': td[9].text,
+                'ICU_Bed_wov_O': td[10].text,
+                'ICU_Bed_wov_A': td[11].text,
+                'ICU_Bed_wv_T': td[12].text,
+                'ICU_Bed_wv_O': td[13].text,
+                'ICU_Bed_wv_A': td[14].text
+            }
+            ins_id = db.bed_tracker.insert_one(data).inserted_id
+            print('Record inserted with Id', ins_id)
 
     cur = db.bed_tracker.find()
     insert_count = 0
     for item in cur:
         insert_count += 1
-    print('Record inserted:',count,'Record in DB:',insert_count)
+    print('Record inserted:', count, 'Record in DB:', insert_count)
 
-sched.start()
 
 """
 

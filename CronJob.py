@@ -7,6 +7,6 @@ from scapebed import updateBed_job
 
 # Create an instance of scheduler and add function.
 scheduler = BlockingScheduler()
-scheduler.add_job(updateBed_job, "interval",  minutes=3)
+scheduler.add_job(updateBed_job, "interval",  minutes=10)
 
 scheduler.start()

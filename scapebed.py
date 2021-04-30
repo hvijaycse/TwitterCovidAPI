@@ -50,36 +50,44 @@ def updateBed_job():
     db = client.test_database
     db.bed_tracker.delete_many({})
     count = 0
+    all_data = []
     for tr in soup.find_all("tr"):
 
         td = tr.find_all("td")
-        if len(td) >= 14:
+        #print(td)
+        if len(td) >= 16:
             count += 1
-            data = {
-                'City': td[1].text,
-                'Hospital': td[2].text,
-                'Gen_Bed_T': td[3].text,
-                'Gen_Bed_O': td[4].text,
-                'Gen_Bed_A': td[5].text,
-                'Oxy_Bed_T': td[6].text,
-                'Oxy_Bed_O': td[7].text,
-                'Oxy_Bed_A': td[8].text,
-                'ICU_Bed_wov_T': td[9].text,
-                'ICU_Bed_wov_O': td[10].text,
-                'ICU_Bed_wov_A': td[11].text,
-                'ICU_Bed_wv_T': td[12].text,
-                'ICU_Bed_wv_O': td[13].text,
-                'ICU_Bed_wv_A': td[14].text
-            }
-            ins_id = db.bed_tracker.insert_one(data).inserted_id
-            print('Record inserted with Id', ins_id)
+            data  = {
+                    'City':td[1].text,
+                    'Hospital':td[2].text,
+                    'Gen_Bed_T': td[3].text,
+                    'Gen_Bed_O': td[4].text,
+                    'Gen_Bed_A': td[5].text,
+                    'Oxy_Bed_T': td[6].text,
+                    'Oxy_Bed_O': td[7].text,
+                    'Oxy_Bed_A': td[8].text,
+                    'ICU_Bed_wov_T': td[9].text,
+                    'ICU_Bed_wov_O': td[10].text,
+                    'ICU_Bed_wov_A': td[11].text,
+                    'ICU_Bed_wv_T': td[12].text,
+                    'ICU_Bed_wv_O': td[13].text,
+                    'ICU_Bed_wv_A': td[14].text,
+                    'Contact_Number': td[15].text,
+                    #'Contact_Hospital': td[16].text,
+                    }
+            all_data.append(data)
+
+    #print(all_data)
+    db.bed_tracker.delete_many({})
+    ins_id = db.bed_tracker.insert_many(all_data)  
+        
+    print('Record inserted',ins_id.acknowledged)
 
     cur = db.bed_tracker.find()
     insert_count = 0
     for item in cur:
         insert_count += 1
-    print('Record inserted:', count, 'Record in DB:', insert_count)
-
+    print('Record inserted:',count,'Record in DB:',insert_count)
 
 """
 

@@ -118,6 +118,9 @@ def get_bed(db, city):
             if "ICU_Bed_wv_O"in item.keys():
                 data["ICU_Bed_wv_O"] = item['ICU_Bed_wv_O']   
             if "ICU_Bed_wv_A"in item.keys():
-                data["ICU_Bed_wv_A"] = item['ICU_Bed_wv_A']                   
+                data["ICU_Bed_wv_A"] = item['ICU_Bed_wv_A']
+            if "Contact_Number"in item.keys():
+                data["Contact_Number"] = item['Contact_Number']
             ret.append(data)
     return ret 
+

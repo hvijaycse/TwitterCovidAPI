@@ -38,6 +38,7 @@ def updateBed_job():
     dbUsername = os.environ.get('db_username', None)
     dbPass = os.environ.get('db_pass', None)
     url = 'https://covidinfo.rajasthan.gov.in/Covid-19hospital-wisebedposition-wholeRajasthan.aspx'
+    herokurl = "https://cjaipur.herokuapp.com/"
 
     status_code = urlopen(url).getcode()
 
@@ -99,6 +100,10 @@ def updateBed_job():
     else:
         print("First Check")
         print("Website is down")
+
+    # Calling heroku api so that 
+    # free dyno doesn't go down
+    urlopen(herokurl)
 
 if __name__== "__main__":
     updateBed_job()

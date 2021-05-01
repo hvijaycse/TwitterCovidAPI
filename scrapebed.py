@@ -22,10 +22,6 @@ Created on Wed Apr 28 17:59:05 2021
 
 
 """
-
-
-
-
 import requests
 import pymongo
 import os
@@ -47,8 +43,7 @@ def updateBed_job():
 
     client = pymongo.MongoClient(
         f"mongodb+srv://{dbUsername}:{dbPass}@cluster0.w3mep.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-    db = client.test_database
-    db.bed_tracker.delete_many({})
+    
     count = 0
     all_data = []
     for tr in soup.find_all("tr"):
@@ -76,18 +71,26 @@ def updateBed_job():
                     #'Contact_Hospital': td[16].text,
                     }
             all_data.append(data)
-
+    
     #print(all_data)
-    db.bed_tracker.delete_many({})
-    ins_id = db.bed_tracker.insert_many(all_data)  
-        
-    print('Record inserted',ins_id.acknowledged)
+    if count == 0:
+        print("Website may be down")
+    else:
+        print("Website is up")
+        db = client.test_database
+        db.bed_tracker.delete_many({})
+        ins_id = db.bed_tracker.insert_many(all_data)  
+            
+        print('Record inserted',ins_id.acknowledged)
 
-    cur = db.bed_tracker.find()
-    insert_count = 0
-    for item in cur:
-        insert_count += 1
-    print('Record inserted:',count,'Record in DB:',insert_count)
+        cur = db.bed_tracker.find()
+        insert_count = 0
+        for item in cur:
+            insert_count += 1
+        print('Record inserted:',count,'Record in DB:',insert_count)
+
+if __name__== "__main__":
+    updateBed_job()
 
 """
 

@@ -1,6 +1,6 @@
 # Package Scheduler.
 from apscheduler.schedulers.blocking import BlockingScheduler
-from scapebed import updateBed_job
+from scrapebed import updateBed_job
 # Main cronjob function.
 
 

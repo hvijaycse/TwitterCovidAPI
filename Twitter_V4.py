@@ -88,7 +88,7 @@ def printTweets(ResourceName, tweetsList, ResultLimit=None):
     print()  # empty line
 
 
-def getResourceTSO(keywords: list, stopWords: list = None, resultType: str = 'recent') -> TwitterSearchOrder:
+def getResourceTSO(keywords: list, stopWords: list = None, resultType: str = 'recent', verified: bool = True) -> TwitterSearchOrder:
     '''
     This method takes two arguments keywords
     and resultType (optional).
@@ -107,7 +107,9 @@ def getResourceTSO(keywords: list, stopWords: list = None, resultType: str = 're
     # around 5 times from 1200 tweets filtering
     # to just 200 to 300 now.
     keywords.append('-filter:retweets')
-    keywords.append('verified')
+
+    if verified:
+        keywords.append('verified')
 
     if stopWords == None:
         stopWords = [

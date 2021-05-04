@@ -15,7 +15,7 @@ class CovidResourceTSOs:
 
         self.Tocilizumab = getResourceTSO(["Tocilizumab", city])
 
-        self.Food = getResourceTSO(["food", "covid", city], stopWords=[])
+        self.Food = getResourceTSO(["food", city], stopWords=[])
 
         OxBedstopWords = [
             'need',
@@ -37,7 +37,7 @@ class CovidResourceTSOs:
 
         self.ICUbeds = getResourceTSO(["icu", city])
 
-        self.News = getResourceTSO(["News", "covid", city])
+        self.News = getResourceTSO(["News", "covid", city], stopWords=[], verified=False)
 
 
 ResourceTSO = CovidResourceTSOs()

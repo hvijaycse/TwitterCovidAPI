@@ -1,3 +1,4 @@
 # Credentials
 creds.json
 .vscode
+__pycache__

@@ -176,3 +176,7 @@ if __name__ == "__main__":
     # TOCILIZUMAB FETCH
     TOCILIZUMABKeywords = ["Tocilizumab", "verified", city]
     # printTweets("TOCILIZUMAB", getResourceTweets(TOCILIZUMABKeywords))
+
+    # VENTILATOR FETCH
+    VENTILATORKeywords = ["VENTILATOR", "verified", city]
+    # printTweets("VENTILATOR", getResourceTweets(VENTILATORKeywords))

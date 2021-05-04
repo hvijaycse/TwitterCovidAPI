@@ -1,12 +1,49 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from Twitter_V4 import getResourceTweets
+from Twitter_V4 import getResourceTSO, tweetList
 from get_db import get_resources, connect_db, put_resources, Item, get_bed
+
+
+class CovidResourceTSOs:
+
+    def __init__(self) -> None:
+
+        city = 'jaipur'
+
+        self.Remdesivir = getResourceTSO(["remdesivir", city])
+
+        self.Tocilizumab = getResourceTSO(["Tocilizumab", city])
+
+        self.Food = getResourceTSO(["food", "covid", city], stopWords=[])
+
+        OxBedstopWords = [
+            'need',
+            'needs',
+            'needed',
+            'any',
+            'required',
+            'require',
+            'requires',
+            'requirement',
+            'without',
+            'golden'
+        ]
+        self.OxygenBeds = getResourceTSO(["beds", "oxygen", city], stopWords=OxBedstopWords)
+
+        self.OxygenCylinder = getResourceTSO(["Oxygen", "cylinder", city])
+
+        self.HospitalBeds = getResourceTSO(["beds", city])
+
+        self.ICUbeds = getResourceTSO(["icu", city])
+
+        self.News = getResourceTSO(["News", "covid", city])
+
+
+ResourceTSO = CovidResourceTSOs()
 
 app = FastAPI()
 
-city = 'jaipur'
 origins = ['*']
 
 app.add_middleware(CORSMiddleware,  allow_origins=origins,
@@ -28,6 +65,8 @@ def returnDict(tweets: list) -> dict:
 '''
 Endpoint url
 '''
+
+
 @app.get("/")
 def home():
 
@@ -40,57 +79,51 @@ def home():
 Endpoints for Twitter API.
 '''
 
+
 @app.get('/getRem')
 def getRemdesivir():
-    remdesivirKeywords = ["remdesivir", "verified", city]
-    return(returnDict(getResourceTweets(remdesivirKeywords)))
+    return(returnDict(tweetList(ResourceTSO.Remdesivir)))
 
 
 @app.get('/getToc')
 def getTocilizumab():
-    TOCILIZUMABKeywords = ["Tocilizumab", "verified", city]
-    return(returnDict(getResourceTweets(TOCILIZUMABKeywords)))
+    return(returnDict(tweetList(ResourceTSO.Tocilizumab)))
 
 
 @app.get('/getFood')
 def getFood():
-    foodKeywords = ["food", "covid", city]
-    return(returnDict(getResourceTweets(foodKeywords, stopWords=[])))
+    return(returnDict(tweetList(ResourceTSO.Food)))
 
 
 @app.get('/getOxygenCylinder')
 def getOxygenCylinder():
-    oxygenCylinderKeywords = ["Oxygen", "cylinder", "verified", city]
-    return(returnDict(getResourceTweets(oxygenCylinderKeywords)))
+    return(returnDict(tweetList(ResourceTSO.OxygenCylinder)))
 
 
 @app.get('/getOxygenBed')
 def getOxygenBed():
-    oxygenBedKeywords = ["oxygen", "bed", "verified", city]
-    return(returnDict(getResourceTweets(oxygenBedKeywords)))
+    return(returnDict(tweetList(ResourceTSO.OxygenBeds)))
 
 
 @app.get('/getHb')
 def gethospitalBed():
-    hospitalBedKeywords = ["bed", "verified", city]
-    return(returnDict(getResourceTweets(hospitalBedKeywords)))
+    return(returnDict(tweetList(ResourceTSO.HospitalBeds)))
 
 
 @app.get('/getICU')
 def getICU():
-    ICUKeywords = ["ICU", "verified", city]
-    return(returnDict(getResourceTweets(ICUKeywords)))
+    return(returnDict(tweetList(ResourceTSO.ICUbeds)))
 
 
 @app.get('/getNews')
 def getNews():
-    newsKeywords = ["News", "covid", city]
-    return(returnDict(getResourceTweets(newsKeywords)))
+    return(returnDict(tweetList(ResourceTSO.News)))
 
 
 '''
 Endpoints for DB.
 '''
+
 
 @app.get('/getResource/{resource}')
 def getResource(resource):

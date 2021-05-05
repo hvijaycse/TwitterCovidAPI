@@ -2,7 +2,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from Twitter_V4 import getResourceTSO, tweetList
-from get_db import get_resources, connect_db, put_resources, Item, get_bed
+from get_db import (
+    get_resources, 
+    connect_db, 
+    put_resources, 
+    Item, 
+    get_bed,
+    put_subscriber,
+    get_subscriber,
+    Subscriber
+    )
 
 
 class CovidResourceTSOs:
@@ -155,3 +164,19 @@ def getResource(city):
     db = connect_db()
     data = get_bed(db, city)
     return JSONResponse(content=data)
+
+
+@app.post('/putSubscriber/')
+async def putSubscriber(subscriber: Subscriber):
+    db = connect_db()
+    ins_id = put_subscriber(db,subscriber)
+    if ins_id != '':
+        return {'success' : ins_id}
+    else:
+        return {'fail'}
+
+@app.get('/getSubscriber/')
+def getSubscriber():
+    db = connect_db()
+    data = get_subscriber(db)
+    return JSONResponse(content=data)   

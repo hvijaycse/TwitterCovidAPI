@@ -208,3 +208,7 @@ if __name__ == "__main__":
     # VENTILATOR FETCH
     VENTILATORKeywords = ["VENTILATOR", city]
     # printTweets("VENTILATOR", getResourceTweets(VENTILATORKeywords))
+
+    # PLASMA FETCH
+    PLASMAKeywords = ["PLASMA", city]
+    # printTweets("PLASMA", getResourceTweets(PLASMAKeywords))

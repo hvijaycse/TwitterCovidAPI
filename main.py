@@ -39,6 +39,8 @@ class CovidResourceTSOs:
 
         self.News = getResourceTSO(["News", "covid", city], stopWords=[], verified=False)
 
+        self.Plasma = getResourceTSO(["PLASMA", city])
+
 
 ResourceTSO = CovidResourceTSOs()
 
@@ -118,6 +120,10 @@ def getICU():
 @app.get('/getNews')
 def getNews():
     return(returnDict(tweetList(ResourceTSO.News)))
+
+@app.get('/getPlasma')
+def getNews():
+    return(returnDict(tweetList(ResourceTSO.Plasma)))
 
 
 '''

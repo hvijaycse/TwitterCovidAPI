@@ -171,7 +171,10 @@ async def putSubscriber(subscriber: Subscriber):
     db = connect_db()
     ins_id = put_subscriber(db,subscriber)
     if ins_id != '':
-        return {'success' : ins_id}
+        return {
+            'success' : ins_id,
+            'link' : "https://t.me/joinchat/0AYSlyJtnZ9mODU1"
+        }
     else:
         return {'fail'}
 

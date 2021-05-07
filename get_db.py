@@ -14,6 +14,10 @@ import os
 #client = pymongo.MongoClient(f'mongodb+srv://cluster0.w3mep.mongodb.net/myFirstDatabase" --username {username} --passowrd {passs}')
 
 
+'''
+DB Object Models
+'''
+
 class Item(BaseModel):
     #_id: Optional[str] = None
     Name: Optional[str] = None
@@ -45,12 +49,20 @@ class Volunteer(BaseModel):
     Distric_id: Optional[str] = None
     Pincode: Optional[str] = None
 
+
+'''
+Method to connect to DB
+'''
 def connect_db():
     dbUsername = os.environ.get('db_username', None)
     dbPass = os.environ.get('db_pass', None)
     client = pymongo.MongoClient(f"mongodb+srv://{dbUsername}:{dbPass}@cluster0.w3mep.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
     db = client.test_database
     return db
+
+'''
+Method to get and put resources in DB
+'''
 
 def get_resources(db, resource):
     search_string = {"Resource": resource}
@@ -103,6 +115,10 @@ def put_resources(db, item:Item):
     jsonString = dumps(ret)
     return jsonString
 
+'''
+Methods to get live BED status from DB.
+'''
+
 def get_bed(db, city):
     search_string = {"City": city}
     curso = db.bed_tracker.find(search_string)
@@ -142,6 +158,10 @@ def get_bed(db, city):
             ret.append(data)
     return ret 
 
+'''
+Method to get and put subscriber
+'''
+
 def put_subscriber(db, subscriber:Subscriber):
     data  = {
             "Name": subscriber.Name, 
@@ -180,6 +200,21 @@ def get_subscriber(db):
             ret.append(data)
     return ret 
 
+
+def get_subscriber_single(db, subscriber:Subscriber):
+    find_string = {
+            "Email":subscriber.Email,
+            "Contact_number": subscriber.Contact
+            }
+    ret = db.subscriber.find(find_string)
+    for itm in ret:
+        if len(ret) != 0:
+            return 'X'
+    return ''
+
+'''
+Method to put and get Volunteer
+'''
 
 def put_volunteer(db, volunteer:Volunteer):
     data  = {

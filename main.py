@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from Twitter_V4 import tweetList, CovidResourceTSOs
-from send_mail import send_email, Volunteer
+from send_mail import send_volunteer_email, Volunteer
 from get_db import (
     get_resources,
     connect_db,
@@ -10,10 +10,9 @@ from get_db import (
     Item,
     get_bed,
     put_subscriber,
-    get_subscriber,
+    get_subscriber_single,
     Subscriber,
     put_volunteer, 
-    get_volunteer,
     Volunteer
 )
 
@@ -25,8 +24,13 @@ app = FastAPI()
 
 origins = ['*']
 
-app.add_middleware(CORSMiddleware,  allow_origins=origins,
-                   allow_credentials=False,  allow_methods=["*"],  allow_headers=["*"], )
+app.add_middleware(
+    CORSMiddleware,  
+    allow_origins=origins,
+    allow_credentials=False,  
+    allow_methods=["*"],  
+    allow_headers=["*"], 
+)
 
 
 def returnDict(tweets: list) -> dict:
@@ -138,6 +142,11 @@ def getResource(city):
 @app.post('/putSubscriber/')
 async def putSubscriber(subscriber: Subscriber):
     db = connect_db()
+    check_existsing = get_subscriber_single(db, subscriber)
+    if check_existsing == 'X':
+        return {
+            'fail':'Already Exists'
+        }
     ins_id = put_subscriber(db, subscriber)
     if ins_id != '':
         return {
@@ -162,8 +171,9 @@ def getSubscriber():
 async def putResource(volunteer: Volunteer):
     db = connect_db()
     ins_id = put_volunteer(db, volunteer)
-    ret = send_email(volunteer)
-    if ret:
+    if ins_id != '':
+        ret = send_volunteer_email(volunteer, 'Success')
         return {'success'}
     else:
+        #ret = send_email(volunteer, 'Fails')
         return {'fail'}

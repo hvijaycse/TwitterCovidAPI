@@ -21,11 +21,16 @@ receiver_email = ["amanvijay.cs@gmail.com",
 
 
 
-def prepare_email(volunteer: Volunteer):
+def send_volunteer_email(volunteer: Volunteer):
+    receiver_email = [
+        "amanvijay.cs@gmail.com",
+        "hvijay.cse@gmail.com",
+        "gauravvijayvergiya@gmail.com"
+    ]
 
     subject = 'New Volunteer for covid19 assist.'
 
-    body = """\ 
+    body = """
     voila!!
     A new Volunteer for your cool Idea
 
@@ -40,7 +45,49 @@ def prepare_email(volunteer: Volunteer):
         
     Thanks,
     Covid Assist bot
-    """.format(volunteer.FirstName, volunteer.LastName, volunteer.Contact, volunteer.Email, volunteer.City, volunteer.Zipcode, volunteer.Addtochat)
+    """.format(
+        volunteer.FirstName,
+        volunteer.LastName,
+        volunteer.Contact,
+        volunteer.Email,
+        volunteer.City,
+        volunteer.Zipcode,
+        volunteer.Addtochat
+    )
+    send_email(
+        receiver_email=receiver_email,
+        subject=subject, 
+        body=body
+    )
+
+def prepare_email(volunteer: Volunteer):
+    
+    subject = 'New Volunteer for covid19 assist.'
+
+    body = """
+    voila!!
+    A new Volunteer for your cool Idea
+
+    My detials are:
+        First Name: {}
+        Last Name: {}
+        Contact: {}
+        Email: {}
+        City: {}
+        Zipcode: {}
+        Addtochat: {}
+        
+    Thanks,
+    Covid Assist bot
+    """.format(
+        volunteer.FirstName,
+        volunteer.LastName,
+        volunteer.Contact,
+        volunteer.Email,
+        volunteer.City,
+        volunteer.Zipcode,
+        volunteer.Addtochat
+    )
     send_email(sender_email=sender_email, receiver_email=[],
                subject=subject, body=body)
     #    body = 'YOUR TEXT'

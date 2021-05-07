@@ -195,8 +195,8 @@ def getSubscriber():
 
 @app.post('/putVolunteer/')
 async def putResource(volunteer: Volunteer):
-    db = connect_db()
-    ins_id = put_resources(db, volunteer)
+    # db = connect_db()
+    # ins_id = put_resources(db, volunteer)
     ret = send_email(volunteer)
     if ret:
         return {'success'}

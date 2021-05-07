@@ -35,24 +35,22 @@ def send_volunteer_email(volunteer: Volunteer):
     A new Volunteer for your cool Idea
 
     My detials are:
-        First Name: {}
-        Last Name: {}
-        Contact: {}
+        Name: {}
         Email: {}
-        City: {}
-        Zipcode: {}
-        Addtochat: {}
+        Contact: {}
+        Min_age: {}
+        Distric_id: {}
+        Pincode: {}
         
     Thanks,
     Covid Assist bot
     """.format(
-        volunteer.FirstName,
-        volunteer.LastName,
-        volunteer.Contact,
+        volunteer.Name,
         volunteer.Email,
-        volunteer.City,
-        volunteer.Zipcode,
-        volunteer.Addtochat
+        volunteer.Contact,
+        volunteer.Min_age,
+        volunteer.Distric_id,
+        volunteer.Pincode
     )
     send_email(
         receiver_email=receiver_email,

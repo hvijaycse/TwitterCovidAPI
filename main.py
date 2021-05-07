@@ -2,16 +2,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from Twitter_V4 import getResourceTSO, tweetList
+from send_mail import send_email, Volunteer
 from get_db import (
-    get_resources, 
-    connect_db, 
-    put_resources, 
-    Item, 
+    get_resources,
+    connect_db,
+    put_resources,
+    Item,
     get_bed,
     put_subscriber,
     get_subscriber,
     Subscriber
-    )
+)
 
 
 class CovidResourceTSOs:
@@ -38,7 +39,8 @@ class CovidResourceTSOs:
             'without',
             'golden'
         ]
-        self.OxygenBeds = getResourceTSO(["beds", "oxygen", city], stopWords=OxBedstopWords)
+        self.OxygenBeds = getResourceTSO(
+            ["beds", "oxygen", city], stopWords=OxBedstopWords)
 
         self.OxygenCylinder = getResourceTSO(["Oxygen", "cylinder", city])
 
@@ -46,7 +48,8 @@ class CovidResourceTSOs:
 
         self.ICUbeds = getResourceTSO(["icu", city])
 
-        self.News = getResourceTSO(["News", "covid", city], stopWords=[], verified=False)
+        self.News = getResourceTSO(
+            ["News", "covid", city], stopWords=[], verified=False)
 
         self.Plasma = getResourceTSO(["PLASMA", city])
 
@@ -130,6 +133,7 @@ def getICU():
 def getNews():
     return(returnDict(tweetList(ResourceTSO.News)))
 
+
 @app.get('/getPlasma')
 def getNews():
     return(returnDict(tweetList(ResourceTSO.Plasma)))
@@ -169,20 +173,32 @@ def getResource(city):
 @app.post('/putSubscriber/')
 async def putSubscriber(subscriber: Subscriber):
     db = connect_db()
-    ins_id = put_subscriber(db,subscriber)
+    ins_id = put_subscriber(db, subscriber)
     if ins_id != '':
         return {
-            'success' : ins_id,
-            'link' : "https://t.me/joinchat/0AYSlyJtnZ9mODU1"
+            'success': ins_id,
+            'link': "https://t.me/joinchat/0AYSlyJtnZ9mODU1"
         }
     else:
         return {'fail'}
+
 
 @app.get('/getSubscriber/')
 def getSubscriber():
     # db = connect_db()
     # data = get_subscriber(db)
-    # return JSONResponse(content=data)   
+    # return JSONResponse(content=data)
     return {
         "Kuch nah milna ": " ; )"
     }
+
+
+@app.post('/putVolunteer/')
+async def putResource(volunteer: Volunteer):
+    db = connect_db()
+    ins_id = put_resources(db, volunteer)
+    ret = send_email(volunteer)
+    if ret:
+        return {'success'}
+    else:
+        return {'fail'}

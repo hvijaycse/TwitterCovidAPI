@@ -12,7 +12,7 @@ from get_db import (
     put_subscriber,
     get_subscriber_single,
     Subscriber,
-    put_volunteer, 
+    put_volunteer,
     Volunteer
 )
 
@@ -24,13 +24,8 @@ app = FastAPI()
 
 origins = ['*']
 
-app.add_middleware(
-    CORSMiddleware,  
-    allow_origins=origins,
-    allow_credentials=False,  
-    allow_methods=["*"],  
-    allow_headers=["*"], 
-)
+app.add_middleware(CORSMiddleware,  allow_origins=origins,
+                   allow_credentials=False,  allow_methods=["*"],  allow_headers=["*"], )
 
 
 def returnDict(tweets: list) -> dict:
@@ -145,7 +140,7 @@ async def putSubscriber(subscriber: Subscriber):
     check_existsing = get_subscriber_single(db, subscriber)
     if check_existsing == 'X':
         return {
-            'fail':'Already Exists'
+            'fail': 'Already Exists'
         }
     ins_id = put_subscriber(db, subscriber)
     if ins_id != '':

@@ -206,11 +206,15 @@ def get_subscriber_single(db, subscriber:Subscriber):
             "Email":subscriber.Email,
             "Contact_number": subscriber.Contact
             }
-    ret = db.subscriber.find(find_string)
-    for itm in ret:
-        if len(ret) != 0:
-            return 'X'
-    return ''
+    cursor = db.subscriber.find(find_string)
+    count = 0
+    for item in cursor:
+        count +=1
+    
+    if count == 0:
+        print('')
+    else:
+        print("X")
 
 '''
 Method to put and get Volunteer

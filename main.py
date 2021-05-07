@@ -24,8 +24,13 @@ app = FastAPI()
 
 origins = ['*']
 
-app.add_middleware(CORSMiddleware,  allow_origins=origins,
-                   allow_credentials=False,  allow_methods=["*"],  allow_headers=["*"], )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def returnDict(tweets: list) -> dict:

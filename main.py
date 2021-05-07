@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -177,3 +178,10 @@ async def putResource(volunteer: Volunteer):
     else:
         #ret = send_email(volunteer, 'Fails')
         return {'fail'}
+
+
+if __name__ == "__main__":
+    # Bind to PORT if defined, otherwise default to 5000.
+    #port = int(process.env.PORT)
+    #uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", reload=True)

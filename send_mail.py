@@ -16,6 +16,12 @@ port = 587  # For starttls
 sender_email = os.environ.get("smtp_mail", None)
 password = os.environ.get("smtp_pass", None)
 
+print([
+    smtp_server, 
+    sender_email,
+    password
+])
+
 receiver_email = ["amanvijay.cs@gmail.com",
                   "hvijay.cse@gmail.com", "gauravvijayvergiya@gmail.com"]
 

@@ -212,9 +212,9 @@ def get_subscriber_single(db, subscriber:Subscriber):
         count +=1
     
     if count == 0:
-        print('')
+        return ''
     else:
-        print("X")
+        return "X"
 
 '''
 Method to put and get Volunteer

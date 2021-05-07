@@ -36,6 +36,15 @@ class Subscriber(BaseModel):
     Pincode: Optional[str] = None
 
 
+class Volunteer(BaseModel):
+    #_id: Optional[str] = None
+    Name: Optional[str] = None
+    Email: Optional[str] = None
+    Contact: Optional[str] = None
+    Min_age: Optional[str] = None
+    Distric_id: Optional[str] = None
+    Pincode: Optional[str] = None
+
 def connect_db():
     dbUsername = os.environ.get('db_username', None)
     dbPass = os.environ.get('db_pass', None)
@@ -153,6 +162,45 @@ def put_subscriber(db, subscriber:Subscriber):
 
 def get_subscriber(db):
     curso = db.subscriber.find({})
+    ret = []
+    for item in curso:
+            data= {}
+            if "Name"in item.keys():
+                data["Name"] = item['Name']
+            if "Email"in item.keys():
+                data["Email"] = item['Email']
+            if "Contact_number"in item.keys():
+                data["Contact_number"] = item['Contact_number']
+            if "Minmum_age"in item.keys():
+                data["Minmum_age"] = item['Minmum_age']
+            if "Distric_id"in item.keys():
+                data["Distric_id"] = item['Distric_id']
+            if "Pincode"in item.keys():
+                data["Pincode"] = item['Pincode']   
+            ret.append(data)
+    return ret 
+
+
+def put_volunteer(db, volunteer:Volunteer):
+    data  = {
+            "Name": volunteer.Name, 
+            "Email":volunteer.Email, 
+            "Contact_number": volunteer.Contact, 
+            "Minmum_age": volunteer.Min_age, 
+            "Distric_id": volunteer.Distric_id,
+            "Pincode": volunteer.Pincode
+            }
+    ins_id = db.volunteer.insert_one(data).inserted_id
+    ret = ''
+    if ins_id != '':
+        ret = { "success" : ins_id}
+    jsonString = dumps(ret)
+    return jsonString
+
+
+
+def get_volunteer(db):
+    curso = db.volunteer.find({})
     ret = []
     for item in curso:
             data= {}

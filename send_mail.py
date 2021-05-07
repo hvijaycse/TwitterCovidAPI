@@ -6,8 +6,7 @@ Created on Thu Apr 29 11:44:53 2021
 """
 import smtplib
 import ssl
-from pydantic import BaseModel
-from typing import Optional
+from get_db import Volunteer
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
@@ -20,16 +19,6 @@ password = os.environ.get("smtp_pass", None)
 receiver_email = ["amanvijay.cs@gmail.com",
                   "hvijay.cse@gmail.com", "gauravvijayvergiya@gmail.com"]
 
-
-class Volunteer(BaseModel):
-    #_id: Optional[str] = None
-    FirstName: Optional[str] = None
-    LastName: Optional[str] = None
-    Contact: Optional[str] = None
-    Email: Optional[str] = None
-    City: Optional[str] = None
-    Zipcode: Optional[str] = None
-    Addtochat: Optional[str] = None
 
 
 def prepare_email(volunteer: Volunteer):

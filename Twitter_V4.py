@@ -157,6 +157,46 @@ def getResourceTweets(keywords: list, stopWords: list = None):
     return tweetList(ResouceTSO)
 
 
+class CovidResourceTSOs:
+
+    def __init__(self,) -> None:
+
+        city = 'jaipur'
+
+        self.Remdesivir = getResourceTSO(["remdesivir", city])
+
+        self.Tocilizumab = getResourceTSO(["Tocilizumab", city])
+
+        self.Food = getResourceTSO(["food", city], stopWords=[])
+
+        OxBedstopWords = [
+            'need',
+            'needs',
+            'needed',
+            'any',
+            'required',
+            'require',
+            'requires',
+            'requirement',
+            'without',
+            'golden'
+        ]
+        self.OxygenBeds = getResourceTSO(
+            ["beds", "oxygen", city], stopWords=OxBedstopWords)
+
+        self.OxygenCylinder = getResourceTSO(["Oxygen", "cylinder", city])
+
+        self.HospitalBeds = getResourceTSO(["beds", city])
+
+        self.ICUbeds = getResourceTSO(["icu", city])
+
+        self.News = getResourceTSO(
+            ["News", "covid", city], stopWords=[], verified=False)
+
+        self.Plasma = getResourceTSO(["PLASMA", city])
+
+
+
 if __name__ == "__main__":
 
     city = "jaipur"

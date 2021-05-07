@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from Twitter_V4 import getResourceTSO, tweetList
+from Twitter_V4 import tweetList, CovidResourceTSOs
 from send_mail import send_email, Volunteer
 from get_db import (
     get_resources,
@@ -11,49 +11,14 @@ from get_db import (
     get_bed,
     put_subscriber,
     get_subscriber,
-    Subscriber
+    Subscriber,
+    put_volunteer, 
+    get_volunteer,
+    Volunteer
 )
 
 
-class CovidResourceTSOs:
-
-    def __init__(self) -> None:
-
-        city = 'jaipur'
-
-        self.Remdesivir = getResourceTSO(["remdesivir", city])
-
-        self.Tocilizumab = getResourceTSO(["Tocilizumab", city])
-
-        self.Food = getResourceTSO(["food", city], stopWords=[])
-
-        OxBedstopWords = [
-            'need',
-            'needs',
-            'needed',
-            'any',
-            'required',
-            'require',
-            'requires',
-            'requirement',
-            'without',
-            'golden'
-        ]
-        self.OxygenBeds = getResourceTSO(
-            ["beds", "oxygen", city], stopWords=OxBedstopWords)
-
-        self.OxygenCylinder = getResourceTSO(["Oxygen", "cylinder", city])
-
-        self.HospitalBeds = getResourceTSO(["beds", city])
-
-        self.ICUbeds = getResourceTSO(["icu", city])
-
-        self.News = getResourceTSO(
-            ["News", "covid", city], stopWords=[], verified=False)
-
-        self.Plasma = getResourceTSO(["PLASMA", city])
-
-
+# Object of class containing TSO for different resources.
 ResourceTSO = CovidResourceTSOs()
 
 app = FastAPI()
@@ -195,8 +160,8 @@ def getSubscriber():
 
 @app.post('/putVolunteer/')
 async def putResource(volunteer: Volunteer):
-    # db = connect_db()
-    # ins_id = put_resources(db, volunteer)
+    db = connect_db()
+    ins_id = put_volunteer(db, volunteer)
     ret = send_email(volunteer)
     if ret:
         return {'success'}

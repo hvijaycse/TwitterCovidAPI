@@ -172,7 +172,7 @@ async def putResource(volunteer: Volunteer):
     db = connect_db()
     ins_id = put_volunteer(db, volunteer)
     if ins_id != '':
-        ret = send_volunteer_email(volunteer, 'Success')
+        ret = send_volunteer_email(volunteer)
         return {'success'}
     else:
         #ret = send_email(volunteer, 'Fails')

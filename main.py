@@ -1,3 +1,4 @@
+from re import sub
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,7 +15,12 @@ from get_db import (
     get_subscriber_single,
     Subscriber,
     put_volunteer,
-    Volunteer
+    Volunteer,
+
+    put_channel,
+    get_channel,
+    get_channel_by_district,
+    Channel
 )
 
 
@@ -150,10 +156,19 @@ async def putSubscriber(subscriber: Subscriber):
         }
     ins_id = put_subscriber(db, subscriber)
     if ins_id != '':
-        return {
-            'success': ins_id,
-            'link': "https://t.me/joinchat/0AYSlyJtnZ9mODU1"
-        }
+        chat_url = get_channel_by_district(db, subscriber.Distric_id)
+
+        if chat_url != None:
+            return {
+                'success': ins_id,
+                'link': chat_url
+            }
+        else:
+            return {
+                'suceess' : ins_id,
+                'link' : 'None' 
+            }
+        
     else:
         return {'fail'}
 
@@ -179,6 +194,20 @@ async def putResource(volunteer: Volunteer):
         #ret = send_email(volunteer, 'Fails')
         return {'fail'}
 
+@app.post('/putChannel/')
+async def putChannel(channel: Channel):
+    db = connect_db()
+    ins_id = put_channel(db, channel)
+    if ins_id != '':
+        return {'success'}
+    else:
+        return {'fail'}
+
+@app.get('/getChannel/')
+def getChannel():
+    db = connect_db()
+    data = get_channel(db)
+    return JSONResponse(content=data)
 
 if __name__ == "__main__":
     # Bind to PORT if defined, otherwise default to 5000.

@@ -45,10 +45,14 @@ class Volunteer(BaseModel):
     Name: Optional[str] = None
     Email: Optional[str] = None
     Contact: Optional[str] = None
-    Min_age: Optional[str] = None
-    Distric_id: Optional[str] = None
+    City: Optional[str] = None
     Pincode: Optional[str] = None
+    Add_to_group: Optional[str] = None
 
+class Channel(BaseModel):
+    Distric_id: Optional[str] = None
+    Chat_id: Optional[str] = None
+    Chat_url: Optional[str] = None
 
 '''
 Method to connect to DB
@@ -225,9 +229,9 @@ def put_volunteer(db, volunteer:Volunteer):
             "Name": volunteer.Name, 
             "Email":volunteer.Email, 
             "Contact_number": volunteer.Contact, 
-            "Minmum_age": volunteer.Min_age, 
-            "Distric_id": volunteer.Distric_id,
-            "Pincode": volunteer.Pincode
+            "City": volunteer.City, 
+            "Pincode": volunteer.Pincode,
+            "Add_To_Group": volunteer.Add_to_group,
             }
     ins_id = db.volunteer.insert_one(data).inserted_id
     ret = ''
@@ -249,11 +253,55 @@ def get_volunteer(db):
                 data["Email"] = item['Email']
             if "Contact_number"in item.keys():
                 data["Contact_number"] = item['Contact_number']
-            if "Minmum_age"in item.keys():
-                data["Minmum_age"] = item['Minmum_age']
-            if "Distric_id"in item.keys():
-                data["Distric_id"] = item['Distric_id']
+            if "City"in item.keys():
+                data["City"] = item['City']
             if "Pincode"in item.keys():
-                data["Pincode"] = item['Pincode']   
+                data["Pincode"] = item['Pincode']
+            if "Add To Group"in item.keys():
+                data["Add_To_Group"] = item['Add To Group']   
             ret.append(data)
     return ret 
+
+def put_channel(db, channel:Channel):
+    data  = {            
+            "Distric_id": channel.Distric_id,
+            "Chat_id": channel.Chat_id,
+            "Chat_url": channel.Chat_url
+            }
+    ins_id = db.channel.insert_one(data).inserted_id
+    ret = ''
+    if ins_id != '':
+        ret = { "success" : ins_id}
+    jsonString = dumps(ret)
+    return jsonString
+
+def get_channel(db):
+    # find_string = {
+    #         "Distric_id":channel.Distric_id,
+    #         "Pincode": channel.Pincode
+    #         }
+    curso = db.channel.find({})
+    ret = []
+    for item in curso:
+            data= {}
+            if "Distric_id"in item.keys():
+                data["Distric_id"] = item['Distric_id']
+            if "Chat_id"in item.keys():
+                data["Chat_id"] = item['Chat_id']                
+            if "Chat_url"in item.keys():
+                data["Chat_url"] = item['Chat_url']                
+            ret.append(data)
+    return ret 
+
+def get_channel_by_district(db, Distric_id):
+    find_string = {
+            "Distric_id":Distric_id,
+            }
+    curso = db.channel.find(find_string)
+    chat_url = None
+    for item in curso:
+        print(item)
+        if "Chat_url"in item.keys():
+            chat_url = item['Chat_url']    
+                        
+    return chat_url

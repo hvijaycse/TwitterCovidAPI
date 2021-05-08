@@ -1,4 +1,5 @@
 # Credentials
 creds.json
-.vscode
 __pycache__
+.vscode
+dataVisualization

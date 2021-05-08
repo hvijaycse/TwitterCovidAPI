@@ -39,9 +39,9 @@ def send_volunteer_email(volunteer: Volunteer):
         Name: {}
         Email: {}
         Contact: {}
-        Min_age: {}
-        Distric_id: {}
+        City: {}
         Pincode: {}
+        Add To Group: {}
         
     Thanks,
     Covid Assist bot
@@ -49,9 +49,9 @@ def send_volunteer_email(volunteer: Volunteer):
         volunteer.Name,
         volunteer.Email,
         volunteer.Contact,
-        volunteer.Min_age,
-        volunteer.Distric_id,
-        volunteer.Pincode
+        volunteer.City,
+        volunteer.Pincode,
+        volunteer.Add_to_group
     )
     send_email(
         receiver_email=receiver_email,

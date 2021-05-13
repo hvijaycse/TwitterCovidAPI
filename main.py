@@ -149,28 +149,44 @@ def getResource(city):
 @app.post('/putSubscriber/')
 async def putSubscriber(subscriber: Subscriber):
     db = connect_db()
-    check_existsing = get_subscriber_single(db, subscriber)
-    if check_existsing == 'X':
-        return {
-            'fail': 'Already Exists'
-        }
-    ins_id = put_subscriber(db, subscriber)
-    if ins_id != '':
-        chat_url = get_channel_by_district(db, subscriber.Distric_id)
+    check_user = get_subscriber_single(db, subscriber)
+    if check_user:
+        Channel_distric = get_channel_by_district(db, check_user["Distric_id"])
 
-        if chat_url != None:
+        if Channel_distric != None:
+            chat_url = Channel_distric["Chat_url"]
+            chat_name = Channel_distric["Name"]
             return {
-                'success': ins_id,
-                'link': chat_url
+                'Name': chat_name,
+                'link': chat_url,
+                'success': "Already exist"
             }
         else:
             return {
-                'suceess' : ins_id,
+                'suceess' : 'Already exist',
                 'link' : 'None' 
             }
-        
     else:
-        return {'fail'}
+        ins_id = put_subscriber(db, subscriber)
+        if ins_id != '':
+            Channel_distric = get_channel_by_district(db, subscriber.Distric_id)
+            if Channel_distric != None:
+                chat_url = Channel_distric["Chat_url"]
+                chat_name = Channel_distric["Name"]
+                return {
+                    'Name': chat_name,
+                    'link': chat_url,
+                    'success': ins_id
+                }
+            else:
+                return {
+                    'suceess' : ins_id,
+                    'link' : 'None' 
+                }
+            
+        else:
+            return {'fail'}
+
 
 
 @app.get('/getSubscriber/')
@@ -208,6 +224,23 @@ def getChannel():
     db = connect_db()
     data = get_channel(db)
     return JSONResponse(content=data)
+
+@app.get('/getChannelDistrictId/{distric_id}')
+def getChannel(distric_id):
+    db = connect_db()
+    Channel_distric = get_channel_by_district(db, distric_id)
+    if Channel_distric:
+        chat_url = Channel_distric["Chat_url"]
+        chat_name = Channel_distric["Name"]
+        return {
+            'Name': chat_name,
+            'link': chat_url,
+            'success': 'yep'
+        }
+    else:
+        return{
+            'success': 'nope'
+        }
 
 if __name__ == "__main__":
     # Bind to PORT if defined, otherwise default to 5000.

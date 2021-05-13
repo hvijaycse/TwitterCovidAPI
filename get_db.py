@@ -50,6 +50,7 @@ class Volunteer(BaseModel):
     Add_to_group: Optional[str] = None
 
 class Channel(BaseModel):
+    Name: Optional[str] = None
     Distric_id: Optional[str] = None
     Chat_id: Optional[str] = None
     Chat_url: Optional[str] = None
@@ -210,15 +211,9 @@ def get_subscriber_single(db, subscriber:Subscriber):
             "Email":subscriber.Email,
             "Contact_number": subscriber.Contact
             }
-    cursor = db.subscriber.find(find_string)
-    count = 0
-    for item in cursor:
-        count +=1
-    
-    if count == 0:
-        return ''
-    else:
-        return "X"
+    result = db.subscriber.find_one(find_string)
+
+    return result
 
 '''
 Method to put and get Volunteer
@@ -263,7 +258,8 @@ def get_volunteer(db):
     return ret 
 
 def put_channel(db, channel:Channel):
-    data  = {            
+    data  = {
+            "Name": channel.Name,          
             "Distric_id": channel.Distric_id,
             "Chat_id": channel.Chat_id,
             "Chat_url": channel.Chat_url
@@ -284,12 +280,15 @@ def get_channel(db):
     ret = []
     for item in curso:
             data= {}
+            if "Name"in item.keys():
+                data["Name"] = item['Name']
             if "Distric_id"in item.keys():
                 data["Distric_id"] = item['Distric_id']
             if "Chat_id"in item.keys():
                 data["Chat_id"] = item['Chat_id']                
             if "Chat_url"in item.keys():
-                data["Chat_url"] = item['Chat_url']                
+                data["Chat_url"] = item['Chat_url'] 
+                           
             ret.append(data)
     return ret 
 
@@ -297,11 +296,9 @@ def get_channel_by_district(db, Distric_id):
     find_string = {
             "Distric_id":Distric_id,
             }
-    curso = db.channel.find(find_string)
-    chat_url = None
-    for item in curso:
-        print(item)
-        if "Chat_url"in item.keys():
-            chat_url = item['Chat_url']    
-                        
-    return chat_url
+    Channel = db.channel.find_one(find_string)
+
+    if Channel:
+        return Channel
+    else:
+        return None

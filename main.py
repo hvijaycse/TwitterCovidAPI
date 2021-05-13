@@ -191,9 +191,6 @@ async def putSubscriber(subscriber: Subscriber):
 
 @app.get('/getSubscriber/')
 def getSubscriber():
-    # db = connect_db()
-    # data = get_subscriber(db)
-    # return JSONResponse(content=data)
     return {
         "Kuch nah milna ": " ; )"
     }

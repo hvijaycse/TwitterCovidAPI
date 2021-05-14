@@ -121,10 +121,10 @@ Endpoints for DB.
 
 
 @app.get('/getResource/{resource}')
-def getResource(resource):
+def getResource(resource, start: int=0, end: int=10):
     db = connect_db()
     # print(resource)
-    data = get_resources(db, resource)
+    data = get_resources(db, resource, start, end)
     # print(data)
     return JSONResponse(content=data)
 

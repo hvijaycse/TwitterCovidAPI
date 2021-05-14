@@ -69,9 +69,12 @@ def connect_db():
 Method to get and put resources in DB
 '''
 
-def get_resources(db, resource):
+def get_resources(db, resource, start, end):
     search_string = {"Resource": resource}
-    curso = db.covid_resources.find(search_string)
+    if resource == "food":
+        curso = db.covid_resources.find(search_string).skip(start).limit(end - start)
+    else:
+        curso = db.covid_resources.find(search_string)
     ret = []
     for item in curso:
             data= {}

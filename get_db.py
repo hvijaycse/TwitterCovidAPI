@@ -71,10 +71,10 @@ Method to get and put resources in DB
 
 def get_resources(db, resource, start, end):
     search_string = {"Resource": resource}
-    if resource == "food":
-        curso = db.covid_resources.find(search_string).skip(start).limit(end - start)
-    else:
-        curso = db.covid_resources.find(search_string)
+    # if resource == "food":
+    curso = db.covid_resources.find(search_string).skip(start).limit(end - start).sort( [['_id', -1]] )
+    # else:
+        # curso = db.covid_resources.find(search_string)
     ret = []
     for item in curso:
             data= {}

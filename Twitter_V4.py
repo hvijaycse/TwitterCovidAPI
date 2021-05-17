@@ -195,6 +195,8 @@ class CovidResourceTSOs:
 
         self.Plasma = getResourceTSO(["PLASMA", city])
 
+        self.Concentrator = getResourceTSO(["Concentrator", city])
+
 
 
 if __name__ == "__main__":

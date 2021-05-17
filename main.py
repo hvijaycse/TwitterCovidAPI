@@ -114,6 +114,10 @@ def getNews():
 def getNews():
     return(returnDict(tweetList(ResourceTSO.Plasma)))
 
+@app.get('/getConcentrator')
+def getNews():
+    return(returnDict(tweetList(ResourceTSO.Concentrator)))
+
 
 '''
 Endpoints for DB.

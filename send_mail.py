@@ -17,8 +17,11 @@ sender_email = os.environ.get("smtp_mail", None)
 password = os.environ.get("smtp_pass", None)
 
 
-receiver_email = ["amanvijay.cs@gmail.com",
-                  "hvijay.cse@gmail.com", "gauravvijayvergiya@gmail.com"]
+receiver_email = [
+    "amanvijay.cs@gmail.com",
+    "hvijay.cse@gmail.com", 
+    "gauravvijayvergiya@gmail.com",
+]
 
 
 
@@ -26,14 +29,17 @@ def send_volunteer_email(volunteer: Volunteer):
     receiver_email = [
         "amanvijay.cs@gmail.com",
         "hvijay.cse@gmail.com",
-        "gauravvijayvergiya@gmail.com"
+        "gauravvijayvergiya@gmail.com",
+        "agm_amrit@ymail.com",
+        "rishabvijay95@gmail.com",
+        "vijay.piyush.1@gmail.com"
     ]
 
     subject = 'New Volunteer for covid19 assist.'
 
     body = """
     voila!!
-    A new Volunteer for your cool Idea
+    A new Volunteer for covid19assist.in
 
     My detials are:
         Name: {}

@@ -8,7 +8,7 @@ chardet==4.0.0
 cycler==0.10.0
 distlib==0.3.1
 dnspython==2.1.0
-fastapi==0.63.0
+fastapi>=0.65.2
 filelock==3.0.12
 gunicorn==20.1.0
 h11==0.12.0
@@ -18,9 +18,9 @@ importlib-metadata==4.0.1
 kiwisolver==1.3.1
 oauthlib==3.1.0
 pathspec==0.7.0
-Pillow==8.2.0
-pipenv==2020.11.15
-pydantic==1.8.1
+Pillow>=9.0.1
+pipenv>=2022.1.8
+pydantic>=1.8.2
 pymongo==3.11.3
 pyparsing==2.4.7
 python-dateutil==2.8.1
@@ -33,7 +33,7 @@ six==1.15.0
 soupsieve==2.2.1
 starlette==0.13.6
 TwitterSearch==1.0.2
-urllib3==1.26.4
+urllib3>=1.26.5
 uvicorn==0.13.4
 uvloop
 virtualenv==20.4.4
